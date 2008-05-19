@@ -1,11 +1,11 @@
 ImMagick
 ========
 
-RMagick replacement using ImageMagick directly using chainable commands and
-value placeholders. It basically delegates to the command-line tools, so
-constructing commands is similar to how you would work with those. The code
-itself is nothing fancy, it just gets the job done by providing a simple
-DSL-like construct.
+RMagick replacement which uses ImageMagick directly by constructing chainable
+commands with value placeholders. It basically delegates to the command-line
+tools, so constructing commands is similar to how you would work with those.
+The code itself is nothing fancy, it just gets the job done by providing a
+simple DSL-like construct.
 
 Here are a couple of examples:
 
