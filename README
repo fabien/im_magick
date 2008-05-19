@@ -1,0 +1,48 @@
+ImMagick
+========
+
+RMagick replacement using ImageMagick directly using chainable commands and
+value placeholders. It basically delegates to the command-line tools, so
+constructing commands is similar to how you would work with those. The code
+itself is nothing fancy, it just gets the job done by providing a simple
+DSL-like construct.
+
+Here are a couple of examples:
+
+cmd = ImMagick::convert.from(:source).resize(:w, :h).grayscale.to('thumbs/thumb-%03d.jpg')
+cmd.run(:source => 'images/logo.png', :w => 100, :h => 100).save(7) # => thumbs/thumb-007.jpg
+
+---
+
+img = ImMagick::Image.file('images/logo.png')
+img.crop_resized(200, 200, :south)
+
+puts img.inspect
+=> "images/logo.png -resize 200x207 -gravity south -crop 200x200+0+0 +repage"
+
+---
+
+img = ImMagick::Image.file('images/logo.png')
+img.crop_resized(:w, :h, :g) # width, height, gravity placeholders
+
+puts img.inspect(:w => 200, :h => 300, :g => :south) 
+=> "images/logo.png -resize 291x300 -gravity south -crop 200x300+0+0 +repage"
+
+img.save('output/crop-resized-img.jpg', :w => 200, :h => 300, :g => :south)
+
+---
+
+cmd = ImMagick::convert do |c|
+  c.background(:black)
+  c.fill(:white)
+  c.font('./unionbd.ttf')
+  c.pointsize(40)
+  c.size('300x')
+  c.gravity('west')
+  c.caption(:placeholder)
+end
+
+puts cmd.inspect(:placeholder => 'FooBar')
+=> "-background black -fill white -font ./unionbd.ttf -pointsize 40 -size 300x -gravity west caption:'FooBar'"
+
+cmd.run(:placeholder => 'FooBar').save('output/foo-bar.png')
