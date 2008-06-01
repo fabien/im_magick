@@ -1,16 +1,16 @@
 class ImMagick::Command::Composite < ImMagick::Command::Base
   
   recognizes_options(
-    'affine', 			      # affine transform matrix
-    'alpha', 				      # activate, deactivate, reset, or set the alpha channel
+    'affine',             # affine transform matrix
+    'alpha',              # activate, deactivate, reset, or set the alpha channel
     'authenticate',       # decrypt image with this password
-    'blend', 				      # blend images
+    'blend',              # blend images
     'blue-primary',       # chromaticity blue primary point
-    'border', 			      # surround image with a border of color
-    'bordercolor', 	      # border color
-    'channel', 			      # apply option to select image channels
-    'colors', 			      # preferred number of colors in the image
-    'colorspace', 	      # set image colorspace
+    'border',             # surround image with a border of color
+    'bordercolor',        # border color
+    'channel',            # apply option to select image channels
+    'colors',             # preferred number of colors in the image
+    'colorspace',         # set image colorspace
     'comment',            # annotate image with comment
     'compose',            # set image composite operator
     'compress',           # image compression type
