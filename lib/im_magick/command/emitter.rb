@@ -4,7 +4,7 @@ module ImMagick
     module Emitter
       
       def self.included(base)
-        base.class_inheritable_array :recognized_options
+        base.class_inheritable_accessor :recognized_options
         base.recognized_options = []
         base.send(:extend, ClassMethods)
       end
