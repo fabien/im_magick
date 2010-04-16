@@ -146,7 +146,7 @@ describe ImMagick::Image do
     img.save(@output + '/crop-resized-img.jpg', :w => 200, :h => 300, :g => :south).should == @output + '/crop-resized-img.jpg'
   end
   
-  # img.draw.circle(...).circle(...).rectangle(...).paint.annotate(...).save('file.jpg') { |im| im.scale(50).quality(75) }
+  # img.draw.circle(...).circle(...).rectangle(...).paint.annotate(...).save('file.jpg') { |im| im.resize_percent(50).quality(75) }
   it "should offer a Draw object for drawing on the image"
   
   # img = ImMagick::Image.file(@logo)

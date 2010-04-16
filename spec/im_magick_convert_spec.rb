@@ -191,7 +191,7 @@ describe ImMagick::Command::Convert, '(instance)' do
   end
   
   it "offers resize methods" do
-    cmd = ImMagick::convert.from(:source).scale(50).to(@output + '/magick-geometry-change-a.jpg')
+    cmd = ImMagick::convert.from(:source).resize_percent(50).to(@output + '/magick-geometry-change-a.jpg')
     cmd.inspect(:source => @logo).should == "./spec/fixtures/ImageMagick.jpg -resize '50%'"
     cmd.run(:source => @logo).save.should be_a_success
     

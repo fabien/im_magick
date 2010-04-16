@@ -25,7 +25,7 @@ class ImMagick::Command::Convert < ImMagick::Command::Base
     self
   end
   
-  def scale(percent = 100)
+  def resize_percent(percent = 100)
     resize("#{percent}%")
   end
   
