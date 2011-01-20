@@ -22,9 +22,6 @@ lib/im_magick/merbtasks.rb
 lib/im_magick/util/geometry.rb
 lib/im_magick/util/temp_file.rb
 lib/im_magick/version.rb
-script/destroy
-script/generate
-setup.rb
 spec/fixtures/ImageMagick.jpg
 spec/fonts/union.ttf
 spec/fonts/unionbd.ttf
