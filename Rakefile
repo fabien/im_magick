@@ -1,3 +1,5 @@
+$LOAD_PATH.unshift('lib')
+require 'im_magick'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
@@ -7,6 +9,7 @@ begin
     gem.email = "info@atelierfabien.be"
     gem.homepage = "http://github.com/fabien/im_magick"
     gem.authors = ["Fabien Franzen"]
+    gem.version = ImMagick::Version::STRING
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
