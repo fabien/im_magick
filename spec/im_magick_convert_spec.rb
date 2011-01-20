@@ -240,14 +240,20 @@ describe ImMagick::Command::Convert, '(instance)' do
   
   it "returns information for a convert command" do
     cmd = ImMagick::convert.autosize.background(:red).fill(:black).font(@fbold).pointsize(40).gravity('west').label(:placeholder)
-    expected = %q[-background red -fill black -font ./spec/fonts/unionbd.ttf -pointsize 40 -gravity west label:'Hello World']
+    expected = %[-background red -fill black -font #{@fbold} -pointsize 40 -gravity west label:'Hello World']
     cmd.inspect(:placeholder => 'Hello World').should == expected
     
-    expected = { :height=>"54", :type=>"LABEL", :width=>"263", :depth=>"16", :class=>"DirectClass", :dimensions=>"263x54", :offset=>"263x54+0+0" }
-    cmd.run(:placeholder => 'Hello World').info.should == expected
+    info = cmd.run(:placeholder => 'Hello World').info
+    if :symbol.respond_to?('<=>'.to_sym) # we are on ruby 1.9 or compatible
+      info.keys.sort.should == [:class, :depth, :dimensions, :height, :offset, :type, :width]
+    end
+    info[:type].should == 'LABEL'
+    info[:class].should == 'DirectClass'
+    info[:width].to_i.should be_within(10).of(260)
+    info[:height].to_i.should be_within(10).of(54)
     
     runner = cmd.run.autosize
-    runner.options[:autosize].should == "256x54"
+    runner.options[:autosize].should =~ /25\dx5\d/
     runner.save(@output + '/autosized.jpg')
     
     info = ImMagick::ImageInfo.on(runner.filename)
