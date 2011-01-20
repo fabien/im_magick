@@ -77,7 +77,7 @@ class ImMagick::Command::Convert < ImMagick::Command::Base
   end
   
   def sharper
-    cmd.collector.unsharp('1.5×1.0+1.5+0.02')
+    cmd.collector.unsharp('1.5x1.0+1.5+0.02')
     self
   end
   
