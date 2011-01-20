@@ -3,8 +3,6 @@ License.txt
 Manifest.txt
 README
 Rakefile
-config/hoe.rb
-config/requirements.rb
 lib/im_magick.rb
 lib/im_magick/command/base.rb
 lib/im_magick/command/collector.rb
@@ -33,9 +31,4 @@ spec/fonts/unionbd.ttf
 spec/im_magick_convert_spec.rb
 spec/im_magick_image_info_spec.rb
 spec/im_magick_spec.rb
-spec/spec.opts
 spec/spec_helper.rb
-tasks/deployment.rake
-tasks/environment.rake
-tasks/rspec.rake
-tasks/website.rake
