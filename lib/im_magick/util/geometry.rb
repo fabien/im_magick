@@ -48,7 +48,7 @@ module ImMagick
       str << 'x' if (@width > 0 || @height > 0)
       str << "%g" % @height if @height > 0
       str << "%+d%+d" % [@x, @y] if (@x != 0 || @y != 0 || crop)
-      str << RFLAGS.index(@flag).to_s
+      str << RFLAGS.key(@flag).to_s
     end
   
     # attempts to get new dimensions for the current geometry string given these old dimensions.

@@ -17,6 +17,7 @@ require 'im_magick/util/geometry'
 require 'im_magick/util/temp_file'
 
 require 'im_magick/core_ext/class' unless Class.respond_to?(:class_inheritable_accessor)
+require 'im_magick/core_ext/hash' unless {}.respond_to?(:key)
 require 'im_magick/core_ext/string'
 require 'im_magick/image_info'
 
