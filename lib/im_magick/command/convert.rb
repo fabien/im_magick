@@ -95,9 +95,14 @@ class ImMagick::Command::Convert < ImMagick::Command::Base
     def info
       execute_command('info:')
       information = {}
-      if success? && (matches = self.output.strip.match(/([A-Z]+)\s([0-9x]+)\s([0-9x\+-]+)\s(\w+)\s(\d+)-bit$/))
-        information[:type], information[:dimensions], information[:offset], information[:class], information[:depth] = matches.captures
-        information[:width], information[:height] = information[:dimensions].split('x')
+      if success?
+        if matches = self.output.strip.match(/([A-Z]+)\s([0-9x]+)\s([0-9x\+-]+)\s(\w+)\s(\d+)-bit/) # old output format
+          information[:type], information[:dimensions], information[:offset], information[:class], information[:depth] = matches.captures
+          information[:width], information[:height] = information[:dimensions].split('x')
+        elsif matches = self.output.strip.match(/([A-Z]+)\s([0-9x]+)\s([0-9x\+-]+)\s(\d+)-bit\s(\w+)/) # newer output format
+          information[:type], information[:dimensions], information[:offset], information[:depth], information[:class] = matches.captures
+          information[:width], information[:height] = information[:dimensions].split('x')
+        end
       end
       information
     end
