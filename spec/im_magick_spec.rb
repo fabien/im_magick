@@ -9,6 +9,7 @@ describe ImMagick::Image do
     @fnormal  = @fontpath + '/union.ttf'
     @fbold    = @fontpath + '/unionbd.ttf'
     @logo     = @input + '/ImageMagick.jpg'
+    FileUtils.mkdir_p(@output)
   end
   
   after(:all) do
@@ -63,13 +64,13 @@ describe ImMagick::Image do
       m.font(@fnormal).pointsize(20).gravity(:center).caption(:placeholder)
     end
     
-    expected = "-background white -fill black -size 200x -font ./spec/fonts/union.ttf -pointsize 20 -gravity center caption:placeholder"
+    expected = "-background white -fill black -size 200x -font #{@fnormal} -pointsize 20 -gravity center caption:placeholder"
     img.inspect.should == expected
     
     img[:background] = :pink
     img[:placeholder] = 'Hello World'
     
-    expected = "-background pink -fill black -size 200x -font ./spec/fonts/union.ttf -pointsize 20 -gravity center caption:'Hello World'"
+    expected = "-background pink -fill black -size 200x -font #{@fnormal} -pointsize 20 -gravity center caption:'Hello World'"
     img.inspect.should == expected
     
     img.save(@output + '/image-with-caption.jpg').should == @output + '/image-with-caption.jpg'
@@ -89,7 +90,7 @@ describe ImMagick::Image do
     
     img.exists?.should_not be_true
     
-    expected = "./spec/fixtures/ImageMagick.jpg"
+    expected = "#{@input}/ImageMagick.jpg"
     img.inspect.should == expected
     img.save(0).should == @output + '/ImageMagick-0.jpg'
     
@@ -103,7 +104,7 @@ describe ImMagick::Image do
       cmd << file1 << file2
       cmd.append!
     end
-    expected = "-background transparent -fill black ./spec/output/ImageMagick-1.jpg ./spec/output/ImageMagick-2.jpg +append"
+    expected = "-background transparent -fill black #{file1} #{file2} +append"
     img.inspect.should == expected
     img.save(@output + '/appended.jpg').should == @output + '/appended.jpg'
   end
@@ -116,37 +117,37 @@ describe ImMagick::Image do
     
     with_image(@logo) do |img|
       resize_image(img, 100)
-      img.inspect.should == "./spec/fixtures/ImageMagick.jpg -resize 100x100"
+      img.inspect.should == "#{@logo} -resize 100x100"
     end
     
     with_image(@logo) do |img|
       resize_image(img, [100, 50])
-      img.inspect.should == "./spec/fixtures/ImageMagick.jpg -resize 100x50"
+      img.inspect.should == "#{@logo} -resize 100x50"
     end
     
     with_image(@logo) do |img|
       resize_image(img, :width => 100, :height => 200)
-      img.inspect.should == "./spec/fixtures/ImageMagick.jpg -resize 194x200 -gravity center -crop 100x200+0+0 +repage"
+      img.inspect.should == "#{@logo} -resize 194x200 -gravity center -crop 100x200+0+0 +repage"
     end
     
     with_image(@logo) do |img|
       resize_image(img, :width => 200, :height => 300, :gravity => :west)
-      img.inspect.should == "./spec/fixtures/ImageMagick.jpg -resize 291x300 -gravity west -crop 200x300+0+0 +repage"
+      img.inspect.should == "#{@logo} -resize 291x300 -gravity west -crop 200x300+0+0 +repage"
     end
   end
 
   it "offers a macro for crop_resized" do
     img = ImMagick::Image.file(@logo)
-    img.source.should == "./spec/fixtures/ImageMagick.jpg"
+    img.source.should == @logo
     img.crop_resized(200, 200, :south)
-    img.inspect.should == "./spec/fixtures/ImageMagick.jpg -resize 200x207 -gravity south -crop 200x200+0+0 +repage"
+    img.inspect.should == "#{@logo} -resize 200x207 -gravity south -crop 200x200+0+0 +repage"
     img = ImMagick::Image.file(@logo)
     img.crop_resized(:w, :h, :g)
-    img.inspect(:w => 200, :h => 300, :g => :south).should == "./spec/fixtures/ImageMagick.jpg -resize 291x300 -gravity south -crop 200x300+0+0 +repage"
+    img.inspect(:w => 200, :h => 300, :g => :south).should == "#{@logo} -resize 291x300 -gravity south -crop 200x300+0+0 +repage"
     img.save(@output + '/crop-resized-img.jpg', :w => 200, :h => 300, :g => :south).should == @output + '/crop-resized-img.jpg'
   end
   
-  # img.draw.circle(...).circle(...).rectangle(...).paint.annotate(...).save('file.jpg') { |im| im.scale(50).quality(75) }
+  # img.draw.circle(...).circle(...).rectangle(...).paint.annotate(...).save('file.jpg') { |im| im.resize_percent(50).quality(75) }
   it "should offer a Draw object for drawing on the image"
   
   # img = ImMagick::Image.file(@logo)

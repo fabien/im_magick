@@ -2,10 +2,7 @@ module ImMagick
   module Command
     
     class Collector
-      instance_methods.each do |meth|
-        next if meth == 'class'
-        undef_method meth unless meth =~ /^(__|inspect)/
-      end
+      undef_method 'clone'
       
       def initialize(msgs = [])
         @messages = msgs

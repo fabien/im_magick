@@ -25,7 +25,7 @@ class ImMagick::Command::Convert < ImMagick::Command::Base
     self
   end
   
-  def scale(percent = 100)
+  def resize_percent(percent = 100)
     resize("#{percent}%")
   end
   
@@ -77,7 +77,7 @@ class ImMagick::Command::Convert < ImMagick::Command::Base
   end
   
   def sharper
-    cmd.collector.unsharp('1.5×1.0+1.5+0.02')
+    cmd.collector.unsharp('1.5x1.0+1.5+0.02')
     self
   end
   
@@ -96,13 +96,14 @@ class ImMagick::Command::Convert < ImMagick::Command::Base
       execute_command('info:')
       information = {}
       if success?
-        if matches = self.output.strip.match(/([A-Z]+)\s([0-9x]+)\s([0-9x\+-]+)\s(\w+)\s(\d+)-bit/) # old output format
+        # The format of self.output depends on the version of imagemagick. Here is an example:
+        # label:Hello World LABEL 258x54 258x54+0+0 8-bit DirectClass 0.000u 0:00.010
+        if (matches = self.output.strip.match(/([A-Z]+)\s([0-9x]+)\s([0-9x\+-]+)\s(\w+)\s(\d+)-bit$/))
           information[:type], information[:dimensions], information[:offset], information[:class], information[:depth] = matches.captures
-          information[:width], information[:height] = information[:dimensions].split('x')
-        elsif matches = self.output.strip.match(/([A-Z]+)\s([0-9x]+)\s([0-9x\+-]+)\s(\d+)-bit\s(\w+)/) # newer output format
+        elsif (matches = self.output.strip.match(/([A-Z]+)\s([0-9x]+)\s([0-9x\+-]+)\s(\d+)-bit\s(\w+)/))
           information[:type], information[:dimensions], information[:offset], information[:depth], information[:class] = matches.captures
-          information[:width], information[:height] = information[:dimensions].split('x')
         end
+        information[:width], information[:height] = information[:dimensions].split('x') if information[:dimensions]
       end
       information
     end
