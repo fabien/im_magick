@@ -3,7 +3,7 @@ module ImMagick
     
     class Collector
       instance_methods.each do |meth|
-        undef_method meth unless meth.to_s =~ /^(__|class|inspect)/
+        undef_method meth unless meth.to_s =~ /^(__|class|inspect|object_id)/
       end
       
       def initialize(msgs = [])
